@@ -7,34 +7,34 @@ namespace ScreenToGif.ViewModel.ExportPresets.Video.Codecs;
 public class VideoCodec : BindableBase
 {
     [IgnoreDataMember]
-    public VideoCodecs Type { get; internal set; }
+    public VideoCodecs Type { get; protected init; }
 
     [IgnoreDataMember]
-    public string Name { get; internal set; }
+    public string Name { get; protected init; }
 
     [IgnoreDataMember]
-    public string Command { get; internal set; }
+    public string Command { get; protected init; }
 
     [IgnoreDataMember]
-    public string Parameters { get; internal set; }
+    public string Parameters { get; protected init; }
 
     [IgnoreDataMember]
-    public bool IsHardwareAccelerated { get; internal set; }
+    public bool IsHardwareAccelerated { get; protected init; }
         
     [IgnoreDataMember]
-    public bool CanSetCrf { get; internal set; }
+    public bool CanSetCrf { get; protected init; }
 
     [IgnoreDataMember]
-    public int MinimumCrf { get; internal set; }
+    public int MinimumCrf { get; protected init; }
 
     [IgnoreDataMember]
-    public int MaximumCrf { get; internal set; }
+    public int MaximumCrf { get; protected init; }
 
     [IgnoreDataMember]
-    public List<EnumItem<VideoCodecPresets>> CodecPresets { get; internal set; }
+    public List<EnumItem<VideoCodecPresets>> CodecPresets { get; protected init; }
 
     [IgnoreDataMember]
-    public List<EnumItem<VideoPixelFormats>> PixelFormats { get; internal set; }
+    public List<EnumItem<VideoPixelFormats>> PixelFormats { get; protected init; }
 }
 
 public class EnumItem<T> where T : System.Enum

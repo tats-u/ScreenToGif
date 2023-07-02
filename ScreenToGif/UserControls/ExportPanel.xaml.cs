@@ -530,130 +530,17 @@ public partial class ExportPanel : UserControl, IPanel
         FfmpegCodecComboBox.SelectionChanged -= FfmpegCodecComboBox_SelectionChanged;
         var codec = videoPreset.VideoCodec;
 
-        switch (videoPreset.Type)
+        var codecGroup = videoPreset.Type switch
         {
-            case ExportFormats.Avi:
-            {
-                FfmpegCodecComboBox.ItemsSource = new List<VideoCodec>
-                {
-                    new Mpeg2(),
-                    new Mpeg4()
-                };
-
-                break;
-            }
-            case ExportFormats.Mkv:
-            {
-                if (videoPreset.HardwareAcceleration == HardwareAccelerationModes.On)
-                {
-                    FfmpegCodecComboBox.ItemsSource = new List<VideoCodec>
-                    {
-                        new X264(),
-                        new H264Amf(),
-                        new H264Nvenc(),
-                        new H264Qsv(),
-                        new X265(),
-                        new HevcAmf(),
-                        new HevcNvenc(),
-                        new HevcQsv(),
-                        new Vp8(),
-                        new Vp9(),
-                        new LibAom(),
-                        new SvtAv1(),
-                        new Rav1E()
-                    };
-                }
-                else
-                {
-                    FfmpegCodecComboBox.ItemsSource = new List<VideoCodec>
-                    {
-                        new X264(),
-                        new X265(),
-                        new Vp8(),
-                        new Vp9(),
-                        new LibAom(),
-                        new SvtAv1(),
-                        new Rav1E()
-                    };
-                }
-
-                break;
-            }
-            case ExportFormats.Mov:
-            {
-                if (videoPreset.HardwareAcceleration == HardwareAccelerationModes.On)
-                {
-                    FfmpegCodecComboBox.ItemsSource = new List<VideoCodec>
-                    {
-                        new X264(),
-                        new H264Amf(),
-                        new H264Nvenc(),
-                        new H264Qsv(),
-                        new X265(),
-                        new HevcAmf(),
-                        new HevcNvenc(),
-                        new HevcQsv()
-                    };
-                }
-                else
-                {
-                    FfmpegCodecComboBox.ItemsSource = new List<VideoCodec>
-                    {
-                        new X264(),
-                        new X265()
-                    };
-                }
-
-                break;
-            }
-            case ExportFormats.Mp4:
-            {
-                if (videoPreset.HardwareAcceleration == HardwareAccelerationModes.On)
-                {
-                    FfmpegCodecComboBox.ItemsSource = new List<VideoCodec>
-                    {
-                        new X264(),
-                        new H264Amf(),
-                        new H264Nvenc(),
-                        new H264Qsv(),
-                        new X265(),
-                        new HevcAmf(),
-                        new HevcNvenc(),
-                        new HevcQsv(),
-                        new LibAom(),
-                        new SvtAv1(),
-                        new Rav1E()
-                    };
-                }
-                else
-                {
-                    FfmpegCodecComboBox.ItemsSource = new List<VideoCodec>
-                    {
-                        new X264(),
-                        new X265(),
-                        new LibAom(),
-                        new SvtAv1(),
-                        new Rav1E()
-                    };
-                }
-
-                break;
-            }
-            case ExportFormats.Webm:
-            {
-                FfmpegCodecComboBox.ItemsSource = new List<VideoCodec>
-                {
-                    new Vp8(),
-                    new Vp9(),
-                    new LibAom(),
-                    new SvtAv1(),
-                    new Rav1E()
-                };
-
-                break;
-            }
-        }
-
+            ExportFormats.Avi => new[] { VideoCodecGroup.Mpeg },
+            ExportFormats.Mkv => new[] { VideoCodecGroup.H264, VideoCodecGroup.H265, VideoCodecGroup.VPX, VideoCodecGroup.AV1 },
+            ExportFormats.Mov => new[] { VideoCodecGroup.H264, VideoCodecGroup.H265 },
+            ExportFormats.Mp4 => new[] { VideoCodecGroup.H264, VideoCodecGroup.H265, VideoCodecGroup.AV1 },
+            ExportFormats.Webm => new[] { VideoCodecGroup.VPX, VideoCodecGroup.AV1 },
+            _ => null,
+        };
+        if (codecGroup is not null)
+            FfmpegCodecComboBox.ItemsSource = VideoCodecGroup.ToIndividuals(codecGroup, videoPreset.HardwareAcceleration == HardwareAccelerationModes.On);
         videoPreset.VideoCodec = VideoCodecs.NotSelected;
         FfmpegCodecComboBox.SelectionChanged += FfmpegCodecComboBox_SelectionChanged;
         videoPreset.VideoCodec = codec;
